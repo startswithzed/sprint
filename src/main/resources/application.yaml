@@ -2,7 +2,7 @@ spring:
   data: 
     mongodb: 
       uri: 
-      database: 
+      database: sprint  
   mongodb:
     embedded:
-      version: 4.0.2    
+      version: 4.0.2 
