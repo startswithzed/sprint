@@ -19,4 +19,10 @@ public class ExceptionController {
     var error = new Error(HttpStatus.BAD_REQUEST, e.getMessage());
     return ResponseEntity.badRequest().body(error);
   }
+
+  @ExceptionHandler(value = UsernameAlreadyExistsException.class)
+  public ResponseEntity<Error> exception(UsernameAlreadyExistsException e) {
+    var error = new Error(HttpStatus.CONFLICT, e.getMessage());
+    return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+  }
 }

@@ -38,6 +38,7 @@ public class SprintAPI {
     return ResponseEntity.ok(gs.getGoal(goalId));
   }
 
+  // TODO: Change response to created 
   @PostMapping("/goals")
   public ResponseEntity<String> createGoal(@RequestBody GoalDTO data, HttpServletRequest request) {
     var user = request.getHeader("username");
