@@ -5,8 +5,10 @@ import org.springframework.stereotype.Service;
 import io.github.iamzaidsheikh.sprint.exception.BadRequestException;
 import io.github.iamzaidsheikh.sprint.exception.ResourceNotFoundException;
 import io.github.iamzaidsheikh.sprint.goal.repo.GoalRepo;
+import io.github.iamzaidsheikh.sprint.task.dto.SubmitTaskDTO;
 import io.github.iamzaidsheikh.sprint.task.dto.TaskDTO;
 import io.github.iamzaidsheikh.sprint.task.model.Task;
+import io.github.iamzaidsheikh.sprint.task.model.TaskStatus;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -48,6 +50,34 @@ public class TaskService implements ITaskService {
     log.info("Added task: {} to goal: {}", task.getId(), goalId);
 
     return task.getId();
+  }
+
+  @Override
+  public String submitTask(String goalId, String taskId, String username, SubmitTaskDTO submission) {
+    var go = gr.findById(goalId);
+    if (go.isEmpty()) {
+      log.error("Could not find goal: {}", goalId);
+      throw new ResourceNotFoundException("Could not find goal: " + goalId);
+    }
+    var goal = go.get();
+    if (!goal.getAuthor().equals(username)) {
+      log.error("User: {} is not the author of goal: {}", username, goalId);
+      throw new BadRequestException("User: " + username + " is not the author of goal: " + goalId);
+    }
+    var tasks = goal.getTasks();
+    var to = tasks.stream().findFirst().filter(t -> t.getId().equals(taskId));
+    if (to.isEmpty()) {
+      log.error("Could not find task: {}", taskId);
+      throw new ResourceNotFoundException("Could not find task: " + taskId);
+    }
+    var task = to.get();
+    var index = tasks.indexOf(task);
+    task.setSubmission(submission);
+    task.setStatus(TaskStatus.PENDING);
+    log.info("Added a new submission to task: {}", taskId);
+    tasks.set(index, task);
+    goal.setTasks(tasks);
+    return gr.save(goal).getId();
   }
 
 }
