@@ -80,4 +80,90 @@ public class TaskService implements ITaskService {
     return gr.save(goal).getId();
   }
 
+  @Override
+  public String approveTask(String goalId, String taskId, String username) {
+    var go = gr.findById(goalId);
+    if (go.isEmpty()) {
+      log.error("Could not find goal: {}", goalId);
+      throw new ResourceNotFoundException("Could not find goal: " + goalId);
+    }
+    var goal = go.get();
+    if (!username.equals(goal.getMentor1()) && !username.equals(goal.getMentor2())) {
+      log.error("User: {} is not a mentor of goal: {}", username, goalId);
+      throw new BadRequestException("User: " + username + " is not a mentor of goal: " + goalId);
+    }
+    var tasks = goal.getTasks();
+    var to = tasks.stream().findFirst().filter(t -> t.getId().equals(taskId));
+    if (to.isEmpty()) {
+      log.error("Could not find task: {}", taskId);
+      throw new ResourceNotFoundException("Could not find task: " + taskId);
+    }
+    var task = to.get();
+    if (!task.getStatus().equals(TaskStatus.PENDING)) {
+      log.error("There is no submission for task: {}", taskId);
+      throw new ResourceNotFoundException("There is no submission for task: " + taskId);
+    }
+    task.setStatus(TaskStatus.COMPLETED);
+    var index = tasks.indexOf(task);
+    log.error("User: {} approved task: {}", username, taskId);
+    tasks.set(index, task);
+    goal.setTasks(tasks);
+    return gr.save(goal).getId();
+  }
+
+  @Override
+  public SubmitTaskDTO getSubmission(String goalId, String taskId, String username) {
+    var go = gr.findById(goalId);
+    if (go.isEmpty()) {
+      log.error("Could not find goal: {}", goalId);
+      throw new ResourceNotFoundException("Could not find goal: " + goalId);
+    }
+    var goal = go.get();
+    if (!username.equals(goal.getMentor1()) && !username.equals(goal.getMentor2())
+        && !username.equals(goal.getAuthor())) {
+      log.error("User: {} is not a mentor or author of goal: {}", username, goalId);
+      throw new BadRequestException("User: " + username + " is not a mentor or author of goal: " + goalId);
+    }
+    var tasks = goal.getTasks();
+    var to = tasks.stream().findFirst().filter(t -> t.getId().equals(taskId));
+    if (to.isEmpty()) {
+      log.error("Could not find task: {}", taskId);
+      throw new ResourceNotFoundException("Could not find task: " + taskId);
+    }
+    var task = to.get();
+    if (!task.getStatus().equals(TaskStatus.PENDING)) {
+      log.error("There is no submission for task: {}", taskId);
+      throw new ResourceNotFoundException("There is no submission for task: " + taskId);
+    }
+    log.info("Fetching submission for task: {}", taskId);
+    return task.getSubmission();
+  }
+
+  @Override
+  public String deleteTask(String goalId, String taskId, String username) {
+    var go = gr.findById(goalId);
+    if (go.isEmpty()) {
+      log.error("Could not find goal: {}", goalId);
+      throw new ResourceNotFoundException("Could not find goal: " + goalId);
+    }
+    var goal = go.get();
+    if (!username.equals(goal.getMentor1()) && !username.equals(goal.getMentor2())
+        && !username.equals(goal.getAuthor())) {
+      log.error("User: {} is not a mentor or author of goal: {}", username, goalId);
+      throw new BadRequestException("User: " + username + " is not a mentor or author of goal: " + goalId);
+    }
+    var tasks = goal.getTasks();
+    var to = tasks.stream().findFirst().filter(t -> t.getId().equals(taskId));
+    if (to.isEmpty()) {
+      log.error("Could not find task: {}", taskId);
+      throw new ResourceNotFoundException("Could not find task: " + taskId);
+    }
+    var task = to.get();
+    var index = tasks.indexOf(task);
+    tasks.remove(index);
+    goal.setTasks(tasks);
+    log.info("User: {} removed task: {}", username, taskId);
+    return gr.save(goal).getId();
+  }
+
 }

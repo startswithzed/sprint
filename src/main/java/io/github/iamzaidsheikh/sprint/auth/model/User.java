@@ -1,17 +1,18 @@
 package io.github.iamzaidsheikh.sprint.auth.model;
 
-import java.time.LocalDateTime;
-
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import io.github.iamzaidsheikh.sprint.common.BaseEntity;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
 @Document
-public class User {
+public class User extends BaseEntity {
   @Id
   private String id;
 
@@ -28,15 +29,11 @@ public class User {
 
   private String role;
 
-  @Field(name = "created_at")
-  private LocalDateTime createdAt;
-
   public User(String firstName, String lastName, String username, String password, String role) {
     this.firstName = firstName;
     this.lastName = lastName;
     this.username = username;
     this.password = password;
     this.role = role;
-    this.createdAt = LocalDateTime.now();
   }
 }

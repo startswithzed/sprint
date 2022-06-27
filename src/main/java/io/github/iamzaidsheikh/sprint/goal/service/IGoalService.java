@@ -15,4 +15,13 @@ public interface IGoalService {
   String invite(String goalId, String username);
 
   String join(String invCode, String username);
+
+  String leaveGoal(String goalId, String username);
+
+  void deleteGoal(String goalId, String username);
+
+  String extendDeadline(String goalId, String username, String newDeadline);
+
+  String completeGoal(String goalId, String username);
+
 }

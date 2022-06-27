@@ -1,15 +1,18 @@
 package io.github.iamzaidsheikh.sprint.task.model;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 import java.util.UUID;
 
 import org.springframework.data.mongodb.core.mapping.Field;
 
+import io.github.iamzaidsheikh.sprint.common.BaseEntity;
 import io.github.iamzaidsheikh.sprint.task.dto.SubmitTaskDTO;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
+@EqualsAndHashCode(callSuper = false)
 @Data
-public class Task {
+public class Task extends BaseEntity {
 
   private String id;
 
@@ -18,21 +21,17 @@ public class Task {
   @Field(name = "assigned_by")
   private String assignedBy;
 
-  private LocalDateTime deadline;
-
-  @Field(name = "created_at")
-  private LocalDateTime createdAt;
+  private Instant deadline;
 
   private TaskStatus status;
 
   private SubmitTaskDTO submission;
 
-  public Task(String desc, LocalDateTime deadline, String assignedBy) {
+  public Task(String desc, Instant deadline, String assignedBy) {
     this.id = UUID.randomUUID().toString();
     this.desc = desc;
     this.assignedBy = assignedBy;
     this.deadline = deadline;
-    this.createdAt = LocalDateTime.now();
     this.status = TaskStatus.NEW;
     this.submission = null;
   }

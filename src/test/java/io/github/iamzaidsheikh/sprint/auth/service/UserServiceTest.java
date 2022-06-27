@@ -17,17 +17,25 @@ import io.github.iamzaidsheikh.sprint.auth.dto.UserDTO;
 import io.github.iamzaidsheikh.sprint.auth.model.User;
 import io.github.iamzaidsheikh.sprint.auth.repo.UserRepo;
 import io.github.iamzaidsheikh.sprint.exception.UsernameAlreadyExistsException;
+import io.github.iamzaidsheikh.sprint.goal.repo.GoalRepo;
+import io.github.iamzaidsheikh.sprint.profile.repo.UserProfileRepo;
+import io.github.iamzaidsheikh.sprint.profile.service.UserProfileService;
 
 public class UserServiceTest {
   private UserService underTest;
   @Mock
   private UserRepo ur;
   private AutoCloseable ac;
+  @Mock
+  private UserProfileRepo upr;
+  @Mock
+  private GoalRepo gr;
 
   @BeforeEach
   void setUp() {
     ac = MockitoAnnotations.openMocks(this);
-    underTest = new UserService(ur, PasswordEncoderFactories.createDelegatingPasswordEncoder());
+    underTest = new UserService(ur, PasswordEncoderFactories.createDelegatingPasswordEncoder(),
+        new UserProfileService(upr));
   }
 
   @AfterEach
@@ -43,7 +51,7 @@ public class UserServiceTest {
     var user = new User("test", "test", username, "test1234", "USER");
     // when
     when(ur.findByUsername(username)).thenReturn(user);
-        // then
+    // then
     AssertionsForClassTypes.assertThatThrownBy(() -> underTest.registerUser(data))
         .isInstanceOf(UsernameAlreadyExistsException.class)
         .hasMessageContaining("Username: " + username + " already exists");

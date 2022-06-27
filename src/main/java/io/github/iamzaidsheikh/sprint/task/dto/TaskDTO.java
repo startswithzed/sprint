@@ -1,6 +1,6 @@
 package io.github.iamzaidsheikh.sprint.task.dto;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -11,6 +11,6 @@ public class TaskDTO {
 
   private String desc;
 
-  private LocalDateTime deadline;
+  private Instant deadline;
 
 }

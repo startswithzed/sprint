@@ -1,6 +1,6 @@
 package io.github.iamzaidsheikh.sprint.exception;
 
-import java.time.LocalDateTime;
+import java.time.Instant;
 
 import org.springframework.http.HttpStatus;
 
@@ -12,11 +12,11 @@ import lombok.Getter;
 public class Error {
   private HttpStatus status;
   @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy hh:mm:ss")
-  private LocalDateTime timestamp;
+  private Instant timestamp;
   private String message;
 
   public Error(HttpStatus status, String message) {
-    this.timestamp = LocalDateTime.now();
+    this.timestamp = Instant.now();
     this.status = status;
     this.message = message;
   }

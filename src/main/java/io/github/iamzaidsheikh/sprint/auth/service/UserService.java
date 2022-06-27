@@ -10,6 +10,8 @@ import io.github.iamzaidsheikh.sprint.auth.dto.UserDTO;
 import io.github.iamzaidsheikh.sprint.auth.model.User;
 import io.github.iamzaidsheikh.sprint.auth.repo.UserRepo;
 import io.github.iamzaidsheikh.sprint.exception.UsernameAlreadyExistsException;
+import io.github.iamzaidsheikh.sprint.profile.model.UserProfile;
+import io.github.iamzaidsheikh.sprint.profile.service.UserProfileService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -20,6 +22,7 @@ public class UserService implements IUserService, UserDetailsService {
 
   private final UserRepo ur;
   private final PasswordEncoder pe;
+  private final UserProfileService ups;
 
   @Override
   public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
@@ -36,7 +39,7 @@ public class UserService implements IUserService, UserDetailsService {
   }
 
   @Override
-  public String registerUser(UserDTO data) throws UsernameAlreadyExistsException {
+  public UserProfile registerUser(UserDTO data) {
     var username = data.getUsername();
     if (ur.findByUsername(username) != null) {
       log.error("Username: {} already exists", username);
@@ -48,7 +51,8 @@ public class UserService implements IUserService, UserDetailsService {
         pe.encode(data.getPassword()),
         "USER");
     log.info("Creating new user: {}", username);
-    return ur.save(user).getUsername();
+    var savedUser = ur.save(user);
+    return ups.createProfile(savedUser);
   }
 
 }
