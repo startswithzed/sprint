@@ -71,7 +71,7 @@ public class SprintAPI {
     return ResponseEntity.ok(ups.getProfile(username));
   }
 
-  @Operation(summary = "Get all goals")
+  @Operation(summary = "Get all goals [SECURED]")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Fetched all goals", content = {
           @Content(mediaType = "application/json", schema = @Schema(implementation = Goal.class)) }),
@@ -87,7 +87,7 @@ public class SprintAPI {
     return ResponseEntity.ok().body(gs.getAllGoals());
   }
 
-  @Operation(summary = "Fetch goal by id")
+  @Operation(summary = "Fetch goal by id [SECURED]")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Fetched goal", content = {
           @Content(mediaType = "application/json", schema = @Schema(implementation = Goal.class)) }),
@@ -103,7 +103,7 @@ public class SprintAPI {
     return ResponseEntity.ok(gs.getGoal(goalId));
   }
 
-  @Operation(summary = "Create a new goal")
+  @Operation(summary = "Create a new goal [SECURED]")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Created a new goal", content = {
           @Content(mediaType = "text/plain") }),
@@ -119,7 +119,7 @@ public class SprintAPI {
     return ResponseEntity.created(uri).body(goalId);
   }
 
-  @Operation(summary = "Invite a mentor for a goal")
+  @Operation(summary = "Invite a mentor for a goal [SECURED]")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Invite code generated", content = {
           @Content(mediaType = "text/plain") }),
@@ -136,7 +136,7 @@ public class SprintAPI {
 
   }
 
-  @Operation(summary = "Join goal as mentor using invite code")
+  @Operation(summary = "Join goal as mentor using invite code [SECURED]")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Joined goal as a mentor", content = {
           @Content(mediaType = "text/plain") }),
@@ -156,7 +156,7 @@ public class SprintAPI {
 
   }
 
-  @Operation(summary = "Leave mentorship of a goal")
+  @Operation(summary = "Leave mentorship of a goal [SECURED]")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Left mentorship of goal", content = {
           @Content(mediaType = "text/plain") }),
@@ -174,7 +174,7 @@ public class SprintAPI {
     return ResponseEntity.created(uri).body(gs.leaveGoal(goalId, principal.getName()));
   }
 
-  @Operation(summary = "Delete goal by id")
+  @Operation(summary = "Delete goal by id [SECURED]")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Goal deleted"),
       @ApiResponse(responseCode = "404", description = "Could not find goal", content = {
@@ -190,7 +190,7 @@ public class SprintAPI {
     return ResponseEntity.noContent().build();
   }
 
-  @Operation(summary = "Extend goal deadline")
+  @Operation(summary = "Extend goal deadline [SECURED]")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Deadline extended", content = {
           @Content(mediaType = "text/plain") }),
@@ -209,7 +209,7 @@ public class SprintAPI {
     return ResponseEntity.created(uri).body(gs.extendDeadline(goalId, principal.getName(), data.getDeadline()));
   }
 
-  @Operation(summary = "Complete goal")
+  @Operation(summary = "Complete goal [SECURED]")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Goal completed", content = {
           @Content(mediaType = "text/plain") }),
@@ -227,7 +227,7 @@ public class SprintAPI {
     return ResponseEntity.created(uri).body(gs.completeGoal(goalId, principal.getName()));
   }
 
-  @Operation(summary = "Create a new task for goal")
+  @Operation(summary = "Create a new task for goal [SECURED]")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Task created", content = {
           @Content(mediaType = "text/plain") }),
@@ -247,7 +247,7 @@ public class SprintAPI {
     return ResponseEntity.created(uri).body(taskId);
   }
 
-  @Operation(summary = "Submit a task")
+  @Operation(summary = "Submit a task [SECURED]")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Task submitted", content = {
           @Content(mediaType = "text/plain") }),
@@ -269,7 +269,7 @@ public class SprintAPI {
     return ResponseEntity.created(uri).body(ts.submitTask(goalId, taskId, principal.getName(), submission));
   }
 
-  @Operation(summary = "Fetch submission by taskId")
+  @Operation(summary = "Fetch submission by taskId [SECURED]")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "200", description = "Fetched submission", content = {
           @Content(mediaType = "application/json", schema = @Schema(implementation = SubmitTaskDTO.class)) }),
@@ -288,7 +288,7 @@ public class SprintAPI {
     return ResponseEntity.ok(ts.getSubmission(goalId, taskId, principal.getName()));
   }
 
-  @Operation(summary = "Approve task submission")
+  @Operation(summary = "Approve task submission [SECURED]")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "201", description = "Submission approved", content = {
           @Content(mediaType = "text/plain") }),
@@ -312,7 +312,7 @@ public class SprintAPI {
     return ResponseEntity.created(uri).body(ts.approveTask(goalId, taskId, principal.getName()));
   }
 
-  @Operation(summary = "Delete task by id")
+  @Operation(summary = "Delete task by id [SECURED]")
   @ApiResponses(value = {
       @ApiResponse(responseCode = "204", description = "Task deleted", content = {
           @Content(mediaType = "text/plain") }),
