@@ -115,6 +115,7 @@ public class SprintAPI {
           @Content(mediaType = "application/json") }),
       @ApiResponse(responseCode = "400")
   })
+  @Parameter(in = ParameterIn.HEADER, required = true, name = "Authorization", description = "Authorization token")
   @PostMapping("/goals")
   public ResponseEntity<String> createGoal(@RequestBody GoalDTO data, Principal principal) {
     var goalId = gs.createGoal(principal.getName(), data);
