@@ -24,7 +24,7 @@ public class SprintAPITest {
     mockMvc.perform(
       MockMvcRequestBuilders.get("/api/v1/goals")
     ).andExpect(MockMvcResultMatchers.status().isBadRequest())
-    .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("Invalid authorization header"));
+    .andExpect(MockMvcResultMatchers.jsonPath("$.error").value("Missing or Invalid authorization header"));
   }
 
   @WithMockUser
