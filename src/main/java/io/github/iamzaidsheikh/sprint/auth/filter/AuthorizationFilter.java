@@ -32,7 +32,10 @@ public class AuthorizationFilter extends OncePerRequestFilter {
   protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
       throws ServletException, IOException {
 
-    if (request.getServletPath().equals("/api/v1/login") || request.getServletPath().equals("/api/v1/register") || request.getServletPath().contains("/api/v1/profile/")) {
+    if (request.getServletPath().equals("/api/v1/login") || request.getServletPath().equals("/api/v1/register")
+        || request.getServletPath().contains("/api/v1/profile/")
+        || request.getServletPath().contains("/api-docs")
+        || request.getServletPath().startsWith("/swagger-ui")) {
       filterChain.doFilter(request, response);
     } else {
 

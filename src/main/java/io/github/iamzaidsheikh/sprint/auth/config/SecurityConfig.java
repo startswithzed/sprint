@@ -26,7 +26,7 @@ public class SecurityConfig {
 
     http.csrf().disable()
         .authorizeRequests()
-        .antMatchers("/api/v1/login", "/api/v1/register", "/api/v1/profile/**")
+        .antMatchers("/api/v1/login", "/api/v1/register", "/api/v1/profile/**", "/api-docs", "/swagger-ui/**", "/api-docs/**", "/swagger-ui.html")
         .permitAll()
         .antMatchers(HttpMethod.GET, "/api/v1/goals").hasAuthority("ROLE_ADMIN")
         .anyRequest()
