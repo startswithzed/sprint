@@ -27,8 +27,6 @@ import io.github.iamzaidsheikh.sprint.task.dto.SubmitTaskDTO;
 import io.github.iamzaidsheikh.sprint.task.dto.TaskDTO;
 import io.github.iamzaidsheikh.sprint.task.service.ITaskService;
 import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.Parameter;
-import io.swagger.v3.oas.annotations.enums.ParameterIn;
 import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
@@ -84,7 +82,6 @@ public class SprintAPI {
       @ApiResponse(responseCode = "403", content = {
           @Content(mediaType = "application/json") })
   })
-  @Parameter(in = ParameterIn.HEADER, required = true, name = "Authorization", description = "Authorization token")
   @GetMapping("/goals")
   public ResponseEntity<List<Goal>> getAllGoals() {
     return ResponseEntity.ok().body(gs.getAllGoals());
@@ -101,7 +98,6 @@ public class SprintAPI {
       @ApiResponse(responseCode = "400", content = {
           @Content(mediaType = "application/json") })
   })
-  @Parameter(in = ParameterIn.HEADER, required = true, name = "Authorization", description = "Authorization token")
   @GetMapping("/goals/{goalId}")
   public ResponseEntity<Goal> getGoal(@PathVariable String goalId) {
     return ResponseEntity.ok(gs.getGoal(goalId));
@@ -115,7 +111,6 @@ public class SprintAPI {
           @Content(mediaType = "application/json") }),
       @ApiResponse(responseCode = "400")
   })
-  @Parameter(in = ParameterIn.HEADER, required = true, name = "Authorization", description = "Authorization token")
   @PostMapping("/goals")
   public ResponseEntity<String> createGoal(@RequestBody GoalDTO data, Principal principal) {
     var goalId = gs.createGoal(principal.getName(), data);
@@ -135,7 +130,6 @@ public class SprintAPI {
       @ApiResponse(responseCode = "400", content = {
           @Content(mediaType = "application/json") })
   })
-  @Parameter(in = ParameterIn.HEADER, required = true, name = "Authorization", description = "Authorization token")
   @GetMapping("/goals/{goalId}/invite")
   public ResponseEntity<String> invite(@PathVariable String goalId, Principal principal) {
     return ResponseEntity.ok(gs.invite(goalId, principal.getName()));
@@ -153,7 +147,6 @@ public class SprintAPI {
       @ApiResponse(responseCode = "400", content = {
           @Content(mediaType = "application/json") })
   })
-  @Parameter(in = ParameterIn.HEADER, required = true, name = "Authorization", description = "Authorization token")
   @PutMapping("/goals/join/{invCode}")
   public ResponseEntity<String> join(@PathVariable String invCode, Principal principal) {
     var goalId = gs.join(invCode, principal.getName());
@@ -174,7 +167,6 @@ public class SprintAPI {
       @ApiResponse(responseCode = "400", content = {
           @Content(mediaType = "application/json") })
   })
-  @Parameter(in = ParameterIn.HEADER, required = true, name = "Authorization", description = "Authorization token")
   @PutMapping("/goals/{goalId}/leave")
   public ResponseEntity<String> leaveGoal(@PathVariable String goalId, Principal principal) {
     var uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("api/v1/goals/{goalId}").buildAndExpand(goalId)
@@ -192,7 +184,6 @@ public class SprintAPI {
       @ApiResponse(responseCode = "400", content = {
           @Content(mediaType = "application/json") })
   })
-  @Parameter(in = ParameterIn.HEADER, required = true, name = "Authorization", description = "Authorization token")
   @DeleteMapping("/goals/{goalId}")
   public ResponseEntity<String> deleteGoal(@PathVariable String goalId, Principal principal) {
     gs.deleteGoal(goalId, principal.getName());
@@ -210,7 +201,6 @@ public class SprintAPI {
       @ApiResponse(responseCode = "400", content = {
           @Content(mediaType = "application/json") })
   })
-  @Parameter(in = ParameterIn.HEADER, required = true, name = "Authorization", description = "Authorization token")
   @PutMapping("/goals/{goalId}/extend")
   public ResponseEntity<String> extendDeadline(@PathVariable String goalId, @RequestBody ExtendDTO data,
       Principal principal) {
@@ -230,7 +220,6 @@ public class SprintAPI {
       @ApiResponse(responseCode = "400", content = {
           @Content(mediaType = "application/json") })
   })
-  @Parameter(in = ParameterIn.HEADER, required = true, name = "Authorization", description = "Authorization token")
   @PutMapping("/goals/{goalId}/complete")
   public ResponseEntity<String> completeGoal(@PathVariable String goalId, Principal principal) {
     var uri = ServletUriComponentsBuilder.fromCurrentContextPath().path("api/v1/goals/{goalId}").buildAndExpand(goalId)
@@ -249,7 +238,6 @@ public class SprintAPI {
       @ApiResponse(responseCode = "400", content = {
           @Content(mediaType = "application/json") })
   })
-  @Parameter(in = ParameterIn.HEADER, required = true, name = "Authorization", description = "Authorization token")
   @PutMapping("/goals/{goalId}/tasks")
   public ResponseEntity<String> createTask(@PathVariable String goalId, @RequestBody TaskDTO data,
       Principal principal) {
@@ -272,7 +260,6 @@ public class SprintAPI {
       @ApiResponse(responseCode = "400", content = {
           @Content(mediaType = "application/json") })
   })
-  @Parameter(in = ParameterIn.HEADER, required = true, name = "Authorization", description = "Authorization token")
   @PutMapping("/goals/{goalId}/tasks/{taskId}/submit")
   public ResponseEntity<String> submitTask(@PathVariable String goalId, @PathVariable String taskId,
       @RequestBody SubmitTaskDTO submission,
@@ -295,7 +282,6 @@ public class SprintAPI {
       @ApiResponse(responseCode = "400", content = {
           @Content(mediaType = "application/json") })
   })
-  @Parameter(in = ParameterIn.HEADER, required = true, name = "Authorization", description = "Authorization token")
   @GetMapping("/goals/{goalId}/tasks/{taskId}/submission")
   public ResponseEntity<SubmitTaskDTO> getSubmission(@PathVariable String goalId, @PathVariable String taskId,
       Principal principal) {
@@ -317,7 +303,6 @@ public class SprintAPI {
       @ApiResponse(responseCode = "400", content = {
           @Content(mediaType = "application/json") })
   })
-  @Parameter(in = ParameterIn.HEADER, required = true, name = "Authorization", description = "Authorization token")
   @PutMapping("/goals/{goalId}/tasks/{taskId}/approve")
   public ResponseEntity<String> approveTask(@PathVariable String goalId, @PathVariable String taskId,
       Principal principal) {
@@ -340,7 +325,6 @@ public class SprintAPI {
       @ApiResponse(responseCode = "400", content = {
           @Content(mediaType = "application/json") })
   })
-  @Parameter(in = ParameterIn.HEADER, required = true, name = "Authorization", description = "Authorization token")
   @DeleteMapping("/goals/{goalId}/tasks/{taskId}")
   public ResponseEntity<String> deleteTask(@PathVariable String goalId, @PathVariable String taskId,
       Principal principal) {

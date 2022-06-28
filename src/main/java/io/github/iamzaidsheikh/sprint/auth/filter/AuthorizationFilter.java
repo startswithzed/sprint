@@ -66,10 +66,10 @@ public class AuthorizationFilter extends OncePerRequestFilter {
         }
 
       } else {
-        log.error("Invalid authorization header");
+        log.error("Missing or Invalid authorization header");
         response.setStatus(400);
         var error = new HashMap<String, String>();
-        error.put("error", "Invlaid authorization header");
+        error.put("error", "Missing or invalid authorization header");
         response.setContentType("application/json");
         new ObjectMapper().writeValue(response.getOutputStream(), error);
       }
