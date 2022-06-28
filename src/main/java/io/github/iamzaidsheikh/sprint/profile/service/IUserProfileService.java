@@ -7,6 +7,8 @@ import io.github.iamzaidsheikh.sprint.profile.model.UserProfile;
 public interface IUserProfileService {
     UserProfile createProfile(User user);
 
+    UserProfile getProfile(String username);
+
     String addGoal(Goal goal, String username);
 
     String addMentored(Goal goal, String username);

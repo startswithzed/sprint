@@ -30,6 +30,16 @@ public class UserProfileService implements IUserProfileService {
     }
 
     @Override
+    public UserProfile getProfile(String username) {
+        var profile = upr.findByUsername(username);
+        if (profile.isEmpty()) {
+            log.error("Could not find profile for user: {}", username);
+            throw new ResourceNotFoundException("Could not find profile for user: " + username);
+        }
+        return profile.get();
+    }
+
+    @Override
     public String addGoal(Goal goal, String username) {
         var po = upr.findByUsername(username);
         if (po.isEmpty()) {

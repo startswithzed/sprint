@@ -2,6 +2,7 @@ package io.github.iamzaidsheikh.sprint.auth.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
@@ -25,9 +26,9 @@ public class SecurityConfig {
 
     http.csrf().disable()
         .authorizeRequests()
-        .antMatchers("/api/v1/login", "/api/v1/register")
+        .antMatchers("/api/v1/login", "/api/v1/register", "/api/v1/profile/**")
         .permitAll()
-        .antMatchers("/api/v1/goals").hasAuthority("ROLE_ADMIN")
+        .antMatchers(HttpMethod.GET, "/api/v1/goals").hasAuthority("ROLE_ADMIN")
         .anyRequest()
         .authenticated()
         .and()

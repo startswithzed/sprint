@@ -184,6 +184,7 @@ public class GoalService implements IGoalService {
       log.error("New deadline cannot be before previous deadline");
       throw new BadRequestException("New deadline cannot be previous deadline");
     }
+    log.info("Deadline extended for goal: {}", goalId);
     goal.setDeadline(updatedDealine);
     return gr.save(goal).getId();
   }
