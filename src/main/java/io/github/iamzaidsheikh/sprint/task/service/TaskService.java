@@ -1,5 +1,7 @@
 package io.github.iamzaidsheikh.sprint.task.service;
 
+import java.time.Instant;
+
 import org.springframework.stereotype.Service;
 
 import io.github.iamzaidsheikh.sprint.exception.BadRequestException;
@@ -22,6 +24,7 @@ public class TaskService implements ITaskService {
   @Override
   public String createTask(String goalId, String username, TaskDTO data) {
     var go = gr.findById(goalId);
+    var deadline = Instant.parse(data.getDeadline());
     if (!go.isPresent()) {
       log.error("Could not find goal: {}", goalId);
       throw new ResourceNotFoundException("Could not find goal: " + goalId);
@@ -32,7 +35,7 @@ public class TaskService implements ITaskService {
       log.error("User: {} is not the author or mentor of the goal: {}", username, goalId);
       throw new BadRequestException("User: " + username + " is not the author or mentor of the goal: " + goalId);
     }
-    if (data.getDeadline().isAfter(goal.getDeadline())) {
+    if (deadline.isAfter(goal.getDeadline())) {
       log.error("Cannot create a task after goal deadline");
       throw new BadRequestException("Cannot create a task after goal deadline");
     }
@@ -41,7 +44,7 @@ public class TaskService implements ITaskService {
 
     var task = new Task(
         data.getDesc(),
-        data.getDeadline(),
+        deadline,
         username);
 
     tasks.add(0, task);

@@ -1,7 +1,12 @@
 package io.github.iamzaidsheikh.sprint.exception;
 
+import java.util.List;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.FieldError;
+import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
@@ -24,5 +29,13 @@ public class ExceptionController {
   public ResponseEntity<Error> exception(UsernameAlreadyExistsException e) {
     var error = new Error(HttpStatus.CONFLICT, e.getMessage());
     return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+  }
+
+  @ExceptionHandler(MethodArgumentNotValidException.class)
+  public ResponseEntity<?> methodArgumentNotValidException(MethodArgumentNotValidException ex) {
+    BindingResult result = ex.getBindingResult();
+    List<FieldError> fieldErrors = result.getFieldErrors();
+    String errorMessage = fieldErrors.get(0).getDefaultMessage();
+    return ResponseEntity.badRequest().body(new Error(HttpStatus.BAD_REQUEST, errorMessage));
   }
 }
