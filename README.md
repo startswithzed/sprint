@@ -1,5 +1,5 @@
 # Sprint 
-Sprint is an application that helps it's users achieve their goals by maintaining accountability and setting smaller tasks deadline.
+Sprint is an application that helps it's users achieve their goals by maintaining accountability and setting smaller task deadlines.
 Users can: 
 - Create goals with deadlines.
 - Invite other users to be their mentors(2 per goal). Mentors help users complete their tasks and monitor progress made by the user. It helps create accountability. Mentors may also motivate the users to complete their goal within set deadline.
